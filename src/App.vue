@@ -10,6 +10,14 @@ import {
   TooltipProvider,
   TooltipRoot,
   TooltipTrigger,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
 } from 'radix-vue'
 
 const store = usePostStore()
@@ -60,6 +68,7 @@ function getClass(value) {
         title
         <SortIcon :class="getClass('title')" />
       </div>
+
       <div
         class="p-1 basis-3/12 cursor-auto select-none flex gap-3"
         @click="sortPosts('email')"
@@ -98,8 +107,46 @@ function getClass(value) {
           >
             <div class="p-1 basis-1/12">{{ post.id }}</div>
             <div class="p-1 basis-4/12">{{ post.title }}</div>
-
-            <div class="p-1 basis-3/12 cursor-pointer">{{ post.email }}</div>
+            <DialogRoot>
+              <DialogTrigger class="p-1 basis-3/12 cursor-pointer">
+                {{ post.email }}
+              </DialogTrigger>
+              <DialogPortal>
+                <DialogOverlay
+                  class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30"
+                />
+                <DialogContent
+                  class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
+                >
+                  <DialogTitle
+                    class="text-mauve12 m-0 text-[17px] font-semibold"
+                  >
+                    Edit profile
+                  </DialogTitle>
+                  <DialogDescription
+                    class="text-mauve11 mt-2.5 mb-5 text-[15px] leading-normal"
+                  >
+                    hallo
+                  </DialogDescription>
+                  trololo lololo
+                  <div class="mt-[25px] flex justify-end">
+                    <DialogClose as-child>
+                      <button
+                        class="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-sm px-[15px] font-semibold leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+                      >
+                        close
+                      </button>
+                    </DialogClose>
+                  </div>
+                  <DialogClose
+                    class="text-grass11 hover:bg-green4 focus:shadow-green7 absolute top-2.5 right-2.5 inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+                    aria-label="Close"
+                  >
+                    X
+                  </DialogClose>
+                </DialogContent>
+              </DialogPortal>
+            </DialogRoot>
             <TooltipProvider>
               <TooltipRoot>
                 <TooltipTrigger class="p-1 basis-4/12 cursor-pointer">
