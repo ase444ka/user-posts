@@ -16,7 +16,7 @@ export const usePostStore = defineStore('posts', () => {
       email: userStore.users.find(user => user.id === post.userId).email,
       short: post.body.slice(0, 30),
       text: post.body,
-    })),
+    })).slice(0, stateStore.currentPage * 30),
   )
   async function getPosts() {
     try {
