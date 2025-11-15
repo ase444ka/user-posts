@@ -1,14 +1,19 @@
 <script setup>
-import {onMounted} from 'vue'
+import {onMounted, useTemplateRef} from 'vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
 const store = usePostStore()
 const stateStore = useStateStore()
 onMounted(store.getPosts)
+const tableRef = useTemplateRef('table')
 function handleScroll(e) {
   if (e.target.scrollHeight === e.target.clientHeight + e.target.scrollTop) {
     stateStore.page()
   }
+}
+function sortPosts(field) {
+  store.sort(field)
+  tableRef.value.scrollTop = 0;
 }
 </script>
 
@@ -24,10 +29,16 @@ function handleScroll(e) {
     <div
       class="sticky top-0 bg-amber-200 w-2xl flex justify-between border-b border-b-gray-400"
     >
-      <div class="p-1 basis-1/12">id</div>
-      <div class="p-1 basis-4/12">title</div>
-      <div class="p-1 basis-3/12">email</div>
-      <div class="p-1 basis-4/12">body</div>
+      <div class="p-1 basis-1/12 cursor-auto" @click="sortPosts('id')">id</div>
+      <div class="p-1 basis-4/12 cursor-auto" @click="sortPosts('title')">
+        title
+      </div>
+      <div class="p-1 basis-3/12 cursor-auto" @click="sortPosts('email')">
+        email
+      </div>
+      <div class="p-1 basis-4/12 cursor-auto" @click="sortPosts('body')">
+        body
+      </div>
     </div>
     <div class="w-2xl h-96 overflow-y-scroll" v-if="stateStore.loading">
       <div
@@ -38,24 +49,25 @@ function handleScroll(e) {
       </div>
     </div>
     <Transition>
-      <TransitionGroup
-        name="list"
-        tag="div"
+      <div
+        ref="table"
         v-if="store.showingPosts.length"
         class="w-2xl max-h-96 overflow-y-auto"
         @scroll="handleScroll"
       >
-        <div
-          class="flex justify-between border-b border-gray-300 w-full"
-          v-for="post in store.showingPosts"
-          :key="post.id"
-        >
-          <div class="p-1 basis-1/12">{{ post.id }}</div>
-          <div class="p-1 basis-4/12">{{ post.title }}</div>
-          <div class="p-1 basis-3/12 cursor-pointer">{{ post.email }}</div>
-          <div class="p-1 basis-4/12 cursor-pointer">{{ post.short }}...</div>
-        </div>
-      </TransitionGroup>
+        <TransitionGroup name="list">
+          <div
+            class="flex justify-between border-b border-gray-300 w-full"
+            v-for="post in store.showingPosts"
+            :key="post.id"
+          >
+            <div class="p-1 basis-1/12">{{ post.id }}</div>
+            <div class="p-1 basis-4/12">{{ post.title }}</div>
+            <div class="p-1 basis-3/12 cursor-pointer">{{ post.email }}</div>
+            <div class="p-1 basis-4/12 cursor-pointer">{{ post.short }}...</div>
+          </div>
+        </TransitionGroup>
+      </div>
     </Transition>
   </main>
 </template>
@@ -72,10 +84,11 @@ function handleScroll(e) {
 }
 .list-enter-active,
 .list-leave-active {
-  transition: opacity 2s ease;
+  transition: all 1s ease;
 }
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
+  transform: translateY(10);
 }
 </style>

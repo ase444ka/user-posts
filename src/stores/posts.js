@@ -10,19 +10,20 @@ export const usePostStore = defineStore('posts', () => {
   const posts = ref([])
 
   const showingPosts = computed(() =>
-    posts.value.map(post => ({
-      id: post.id,
-      title: post.title,
-      email: userStore.users.find(user => user.id === post.userId).email,
-      short: post.body.slice(0, 30),
-      text: post.body,
-    })).slice(0, stateStore.currentPage * 30),
+    posts.value.slice(0, stateStore.currentPage * 30),
   )
   async function getPosts() {
     try {
       stateStore.setLoading(true)
       await userStore.getUsers()
-      posts.value = await api.getPosts()
+      const data = await api.getPosts()
+      posts.value = data.map(post => ({
+        id: post.id,
+        title: post.title,
+        email: userStore.users.find(user => user.id === post.userId).email,
+        short: post.body.slice(0, 30),
+        body: post.body,
+      }))
     } catch (err) {
       stateStore.setError(err.message)
     } finally {
@@ -30,5 +31,11 @@ export const usePostStore = defineStore('posts', () => {
     }
   }
 
-  return {posts, showingPosts, getPosts}
+  function sort(fieldName) {
+    stateStore.resetPage()
+    console.log(posts.value[0][fieldName])
+    posts.value.sort((a, b) => a[fieldName] > b[fieldName] ? 1 : -1)
+  }
+
+  return {posts, showingPosts, getPosts, sort}
 })
