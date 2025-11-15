@@ -1,7 +1,9 @@
 <script setup>
-import {onMounted, useTemplateRef} from 'vue'
+import {onMounted, useTemplateRef, ref} from 'vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
+import SortIcon from '@/icons/IconSort.vue'
+
 const store = usePostStore()
 const stateStore = useStateStore()
 onMounted(store.getPosts)
@@ -11,9 +13,16 @@ function handleScroll(e) {
     stateStore.page()
   }
 }
+const currentSorting = ref(null)
+
 function sortPosts(field) {
   store.sort(field)
-  tableRef.value.scrollTop = 0;
+  tableRef.value.scrollTop = 0
+  currentSorting.value = field
+}
+
+function getClass(value) {
+  return currentSorting.value === value ? '' : 'text-amber-300'
 }
 </script>
 
@@ -29,15 +38,33 @@ function sortPosts(field) {
     <div
       class="sticky top-0 bg-amber-200 w-2xl flex justify-between border-b border-b-gray-400"
     >
-      <div class="p-1 basis-1/12 cursor-auto" @click="sortPosts('id')">id</div>
-      <div class="p-1 basis-4/12 cursor-auto" @click="sortPosts('title')">
+      <div
+        class="p-1 basis-1/12 cursor-auto select-none flex gap-3"
+        @click="sortPosts('id')"
+      >
+        id
+        <SortIcon class="flex" :class="getClass('id')" />
+      </div>
+      <div
+        class="p-1 basis-4/12 cursor-auto select-none flex gap-3"
+        @click="sortPosts('title')"
+      >
         title
+        <SortIcon :class="getClass('title')" />
       </div>
-      <div class="p-1 basis-3/12 cursor-auto" @click="sortPosts('email')">
+      <div
+        class="p-1 basis-3/12 cursor-auto select-none flex gap-3"
+        @click="sortPosts('email')"
+      >
         email
+        <SortIcon :class="getClass('email')" />
       </div>
-      <div class="p-1 basis-4/12 cursor-auto" @click="sortPosts('body')">
+      <div
+        class="p-1 basis-4/12 cursor-auto select-none flex gap-3"
+        @click="sortPosts('body')"
+      >
         body
+        <SortIcon :class="getClass('body')" />
       </div>
     </div>
     <div class="w-2xl h-96 overflow-y-scroll" v-if="stateStore.loading">
