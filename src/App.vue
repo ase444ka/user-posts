@@ -10,19 +10,39 @@ import {useStateStore} from '@/stores/state'
 const postStore = usePostStore()
 const stateStore = useStateStore()
 onMounted(postStore.getPosts)
-
-
 </script>
 
 <template>
   <AppHeader />
   <main class="mt-5 mx-auto w-fit">
     <ListHeader />
-    <TableSkeleton v-if="stateStore.loading" />
-    <PostList v-else/>
+    <Transition>
+      <TableSkeleton v-if="stateStore.loading" />
+    </Transition>
+    <Transition name="posts">
+      <PostList v-if="!stateStore.loading" />
+    </Transition>
   </main>
 </template>
 
 <style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.posts-enter-active,
+.posts-leave-active {
+  transition: opacity 1.5s ease-out;
+}
+
+.posts-enter-from,
+.posts-leave-to {
+  opacity: 0;
+}
 </style>

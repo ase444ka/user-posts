@@ -1,23 +1,20 @@
 <template>
-  <UserModal v-model="open" />
+  <div>
+    <UserModal v-model="open" />
 
-  <Transition>
     <div
       ref="table"
-      v-if="postStore.showingPosts.length"
       class="w-2xl max-h-96 overflow-y-auto"
       @scroll="handleScroll"
     >
-      <TransitionGroup name="list">
-        <PostItem
-          v-for="post in postStore.showingPosts"
-          :key="post.id"
-          :post="post"
-          @emailClick="handleEmailClick(post)"
-        />
-      </TransitionGroup>
+      <PostItem
+        v-for="post in postStore.showingPosts"
+        :key="post.id"
+        :post="post"
+        @emailClick="handleEmailClick(post)"
+      />
     </div>
-  </Transition>
+  </div>
 </template>
 
 <script setup>
@@ -53,15 +50,6 @@ watch(isReset, value => {
 </script>
 
 <style>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
 .list-enter-active,
 .list-leave-active {
   transition: all 1s ease;
