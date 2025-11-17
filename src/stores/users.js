@@ -6,7 +6,6 @@ import {usePostStore} from './posts'
 export const useUserStore = defineStore('users', () => {
   const users = ref({})
   const currentUser = ref({})
-  const postStore = usePostStore()
 
   async function getUsers() {
     const data = await api.getUsers()
