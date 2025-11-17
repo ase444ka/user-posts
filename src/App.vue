@@ -1,27 +1,13 @@
 <script setup>
-import PostItem from '@/components/PostItem.vue'
-import UserModal from '@/components/UserModal.vue'
-import {onMounted, useTemplateRef, ref} from 'vue'
+import PostList from '@/components/PostList.vue'
+import {onMounted,  ref} from 'vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
-import {useUserStore} from '@/stores/users'
 import SortIcon from '@/icons/IconSort.vue'
 
 const postStore = usePostStore()
 const stateStore = useStateStore()
-const userStore = useUserStore()
 onMounted(postStore.getPosts)
-const tableRef = useTemplateRef('table')
-const open = ref(false)
-function handleScroll(e) {
-  if (e.target.scrollHeight === e.target.clientHeight + e.target.scrollTop) {
-    stateStore.page()
-  }
-}
-function handleEmailClick(post) {
-  userStore.setCurrentUser(post)
-  open.value = true
-}
 
 const currentSorting = ref(null)
 
@@ -37,7 +23,6 @@ function getClass(value) {
 </script>
 
 <template>
-  <UserModal v-model="open" />
   <header class="flex mt-5 mx-auto gap-2 max-w-2xl justify-between">
     <h1>People's blog</h1>
     <label for="search">
@@ -87,23 +72,7 @@ function getClass(value) {
         <div class="h-7 w-full bg-gray-200 animate-pulse"></div>
       </div>
     </div>
-    <Transition>
-      <div
-        ref="table"
-        v-if="postStore.showingPosts.length"
-        class="w-2xl max-h-96 overflow-y-auto"
-        @scroll="handleScroll"
-      >
-        <TransitionGroup name="list">
-          <PostItem
-            v-for="post in postStore.showingPosts"
-            :key="post.id"
-            :post="post"
-            @emailClick="handleEmailClick(post)"
-          />
-        </TransitionGroup>
-      </div>
-    </Transition>
+<PostList />
   </main>
 </template>
 
