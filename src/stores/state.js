@@ -1,10 +1,11 @@
-import {ref} from 'vue'
+import {ref, nextTick } from 'vue'
 import {defineStore} from 'pinia'
 
 export const useStateStore = defineStore('state', () => {
   const loading = ref(false)
   const error = ref(null)
   const currentPage = ref(1)
+  const isTableReset = ref(false)
 
   function setLoading(status) {
     loading.value = status
@@ -18,8 +19,11 @@ export const useStateStore = defineStore('state', () => {
   function page() {
     currentPage.value++
   }
-  function resetPage() {
+  async function resetPage() {
+    isTableReset.value = true
     currentPage.value = 1
+    await nextTick()
+    isTableReset.value = false
   }
 
   return {

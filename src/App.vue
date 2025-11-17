@@ -14,7 +14,7 @@ const currentSorting = ref(null)
 
 function sortPosts(field) {
   postStore.sort(field)
-  tableRef.value.scrollTop = 0
+  stateStore.resetTable()
   currentSorting.value = field
 }
 

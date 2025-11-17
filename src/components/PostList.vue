@@ -22,7 +22,7 @@
 
 <script setup>
 import UserModal from '@/components/UserModal.vue'
-import {onMounted, useTemplateRef, ref} from 'vue'
+import {onMounted, useTemplateRef, ref, watch} from 'vue'
 import PostItem from '@/components/PostItem.vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
@@ -43,6 +43,8 @@ function handleScroll(e) {
     stateStore.page()
   }
 }
+
+watch(stateStore.isTableReset, value => value && tableRef.value.scrollTop = 0)
 </script>
 
 <style>
