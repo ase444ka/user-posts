@@ -8,9 +8,13 @@ export const usePostStore = defineStore('posts', () => {
   const userStore = useUserStore()
   const stateStore = useStateStore()
   const posts = ref([])
+  const filter = ref('')
+  const filteredPosts = computed(() =>
+    posts.value.filter(p => p.body.includes(filter.value)),
+  )
 
   const showingPosts = computed(() =>
-    posts.value.slice(0, stateStore.currentPage * 30),
+    filteredPosts.value.slice(0, stateStore.currentPage * 30),
   )
   async function getPosts() {
     try {
@@ -29,11 +33,23 @@ export const usePostStore = defineStore('posts', () => {
     }
   }
 
+  async function searchPosts(string) {
+    filter.value = string
+  }
+
   function sort(fieldName) {
     stateStore.resetPage()
     console.log(posts.value[0][fieldName])
-    posts.value.sort((a, b) => a[fieldName] > b[fieldName] ? 1 : -1)
+    posts.value.sort((a, b) => (a[fieldName] > b[fieldName] ? 1 : -1))
   }
 
-  return {posts, showingPosts, getPosts, sort}
+  return {
+    posts,
+    showingPosts,
+    filteredPosts,
+    getPosts,
+    searchPosts,
+    sort,
+    filter,
+  }
 })
