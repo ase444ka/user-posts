@@ -47,7 +47,7 @@ const currentSorting = ref(null)
 
 function sortPosts(field) {
   postStore.sort(field)
-  stateStore.resetTable()
+  stateStore.resetPage()
   currentSorting.value = field
 }
 

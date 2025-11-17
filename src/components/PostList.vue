@@ -22,7 +22,7 @@
 
 <script setup>
 import UserModal from '@/components/UserModal.vue'
-import {onMounted, useTemplateRef, ref, watch} from 'vue'
+import {onMounted, useTemplateRef, ref, computed, watch} from 'vue'
 import PostItem from '@/components/PostItem.vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
@@ -30,6 +30,8 @@ import {useUserStore} from '@/stores/users'
 const postStore = usePostStore()
 const stateStore = useStateStore()
 const userStore = useUserStore()
+
+const isReset = computed(() => stateStore.isTableReset)
 
 const tableRef = useTemplateRef('table')
 const open = ref(false)
@@ -44,10 +46,22 @@ function handleScroll(e) {
   }
 }
 
-watch(stateStore.isTableReset, value => value && tableRef.value.scrollTop = 0)
+watch(isReset, value => {
+  console.log('watch ', value)
+  value && (tableRef.value.scrollTop = 0)
+})
 </script>
 
 <style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 .list-enter-active,
 .list-leave-active {
   transition: all 1s ease;

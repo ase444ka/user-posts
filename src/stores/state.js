@@ -35,5 +35,6 @@ export const useStateStore = defineStore('state', () => {
     resetError,
     page,
     resetPage,
+    isTableReset,
   }
 })

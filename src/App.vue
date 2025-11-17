@@ -24,18 +24,10 @@ onMounted(postStore.getPosts)
   <main class="mt-5 mx-auto w-fit">
     <ListHeader />
     <TableSkeleton v-if="stateStore.loading" />
-    <PostList />
+    <PostList v-else/>
   </main>
 </template>
 
 <style>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
 
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
 </style>
