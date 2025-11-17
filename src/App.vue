@@ -1,6 +1,7 @@
 <script setup>
+import TableSkeleton from '@/components/TableSkeleton.vue'
 import PostList from '@/components/PostList.vue'
-import {onMounted,  ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
 import SortIcon from '@/icons/IconSort.vue'
@@ -64,15 +65,8 @@ function getClass(value) {
         <SortIcon :class="getClass('body')" />
       </div>
     </div>
-    <div class="w-2xl h-96 overflow-y-scroll" v-if="stateStore.loading">
-      <div
-        class="w-full h-8 border-b border-gray-300 flex items-center"
-        v-for="n in 20"
-      >
-        <div class="h-7 w-full bg-gray-200 animate-pulse"></div>
-      </div>
-    </div>
-<PostList />
+    <TableSkeleton v-if="stateStore.loading" />
+    <PostList />
   </main>
 </template>
 
