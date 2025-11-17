@@ -13,9 +13,8 @@ export const useUserStore = defineStore('users', () => {
     users.value = data
   }
 
-  async function setCurrentUser(postId) {
-    const currentPost = postStore.posts.find(post => post.id === postId)
-    const user = users.value.find(user => user.id === currentPost.userId)
+  async function setCurrentUser(post) {
+    const user = users.value.find(user => user.id === post.userId)
     currentUser.value = {
       ...user,
       href: `https://www.${user.website}`,

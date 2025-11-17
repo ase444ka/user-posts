@@ -2,7 +2,7 @@
   <TooltipProvider>
     <TooltipRoot>
       <TooltipTrigger class="p-1 basis-4/12 cursor-pointer">
-        {{ post.short }}...
+        {{ short }}...
       </TooltipTrigger>
       <TooltipPortal>
         <TooltipContent
@@ -10,7 +10,7 @@
           :side-offset="2"
           align="end"
         >
-          {{ post.body }}
+          {{ body }}
           <TooltipArrow class="fill-amber-200" :width="8" />
         </TooltipContent>
       </TooltipPortal>
@@ -27,7 +27,7 @@ import {
   TooltipRoot,
   TooltipTrigger,
 } from 'radix-vue'
-const {post} = defineProps(['post'])
+const {short, body} = defineProps(['short', 'body'])
 </script>
 
 <style scoped></style>

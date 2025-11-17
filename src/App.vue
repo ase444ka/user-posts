@@ -1,12 +1,11 @@
 <script setup>
-import PostBody from '@/components/PostBody.vue'
+import PostItem from '@/components/PostItem.vue'
 import UserModal from '@/components/UserModal.vue'
 import {onMounted, useTemplateRef, ref} from 'vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
 import {useUserStore} from '@/stores/users'
 import SortIcon from '@/icons/IconSort.vue'
-
 
 const postStore = usePostStore()
 const stateStore = useStateStore()
@@ -19,8 +18,8 @@ function handleScroll(e) {
     stateStore.page()
   }
 }
-function handleEmailClick(postId) {
-  userStore.setCurrentUser(postId)
+function handleEmailClick(post) {
+  userStore.setCurrentUser(post)
   open.value = true
 }
 
@@ -96,21 +95,12 @@ function getClass(value) {
         @scroll="handleScroll"
       >
         <TransitionGroup name="list">
-          <div
-            class="flex justify-between border-b border-gray-300 w-full"
+          <PostItem
             v-for="post in postStore.showingPosts"
-            :key="post.id"
-          >
-            <div class="p-1 basis-1/12">{{ post.id }}</div>
-            <div class="p-1 basis-4/12">{{ post.title }}</div>
-            <div
-              class="p-1 basis-3/12 cursor-pointer"
-              @click="handleEmailClick(post.id)"
-            >
-              {{ post.email }}
-            </div>
-            <PostBody :post="post" />
-          </div>
+            :key="id"
+            :post="post"
+            @emailClick="handleEmailClick(post)"
+          />
         </TransitionGroup>
       </div>
     </Transition>
