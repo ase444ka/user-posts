@@ -45,4 +45,14 @@ function handleScroll(e) {
 }
 </script>
 
-<style scoped></style>
+<style>
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(10);
+}
+</style>
