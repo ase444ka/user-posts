@@ -97,7 +97,7 @@ function getClass(value) {
         <TransitionGroup name="list">
           <PostItem
             v-for="post in postStore.showingPosts"
-            :key="id"
+            :key="post.id"
             :post="post"
             @emailClick="handleEmailClick(post)"
           />
