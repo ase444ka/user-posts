@@ -18,7 +18,6 @@ import {
   DialogPortal,
   DialogRoot,
   DialogTitle,
-  DialogTrigger,
 } from 'radix-vue'
 
 const postStore = usePostStore()
