@@ -6,12 +6,13 @@
       <input type="text" id="search" v-model="searchString" />
     </label>
     <button type="button" @click="processSearch" :disabled="!searchString">go!</button>
-    <button type="button" @click="processClear" :disabled="!searchString">clear search</button>
+    <button type="button" @click="processClear" v-if="searchString">clear search</button>
+    <button type="button" @click="stateStore.resetPage" v-if="stateStore.currentPage > 1">go up</button>
   </header>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
 
@@ -29,6 +30,8 @@ function processClear() {
   searchString.value = ''
   postStore.searchPosts('')
 }
+
+const clearButtonText = computed(() => searchString.value ? 'clear Search' : 'go to top')
 </script>
 
 <style scoped></style>
