@@ -29,10 +29,10 @@ export const useStateStore = defineStore('state', () => {
     loading.value = status
   }
   function setError(message) {
-    error = message
+    error.value = message
   }
   function resetError() {
-    error = null
+    error.value = null
   }
   function page() {
     currentPage.value++

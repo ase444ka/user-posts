@@ -1,4 +1,5 @@
 <script setup>
+import ErrorToast from '@/components/ErrorToast.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import ListHeader from '@/components/ListHeader.vue'
 import TableSkeleton from '@/components/TableSkeleton.vue'
@@ -22,6 +23,7 @@ onMounted(postStore.getPosts)
     <Transition name="posts">
       <PostList v-if="!stateStore.loading" />
     </Transition>
+    <ErrorToast />
   </main>
 </template>
 
