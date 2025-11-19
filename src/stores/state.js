@@ -1,4 +1,4 @@
-import {ref, nextTick } from 'vue'
+import {ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import {defineStore} from 'pinia'
 
 export const useStateStore = defineStore('state', () => {
@@ -6,6 +6,24 @@ export const useStateStore = defineStore('state', () => {
   const error = ref(null)
   const currentPage = ref(1)
   const isTableReset = ref(false)
+  const clientY = ref(0)
+  const isTop = ref(false)
+
+  function setY(event) {
+    clientY.value = event.clientY
+  }
+
+  function setTop() {
+    isTop.value = clientY.value < 186
+  }
+
+  onMounted(() => {
+    document.addEventListener('mousemove', setY)
+  })
+  onBeforeUnmount(() => {
+    document.removeEventListener('mousemove', setY)
+  })
+
 
   function setLoading(status) {
     loading.value = status
@@ -27,6 +45,8 @@ export const useStateStore = defineStore('state', () => {
   }
 
   return {
+    clientY,
+    isTop,
     loading,
     error,
     currentPage,
@@ -35,6 +55,7 @@ export const useStateStore = defineStore('state', () => {
     resetError,
     page,
     resetPage,
+    setTop,
     isTableReset,
   }
 })
