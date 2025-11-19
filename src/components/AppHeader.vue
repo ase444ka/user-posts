@@ -16,13 +16,6 @@
         @click="processClear"
       />
     </div>
-    <button
-      type="button"
-      @click="stateStore.resetPage"
-      v-if="stateStore.currentPage > 1"
-    >
-      go up
-    </button>
   </header>
 </template>
 

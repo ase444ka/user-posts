@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <UserModal v-model="open" />
 
     <div
@@ -14,16 +14,27 @@
         @emailClick="handleEmailClick(post)"
       />
     </div>
+    <Transition>
+      <button
+        class="absolute bottom-1.5 right-1.5 rounded-full bg-amber-300 grid place-items-center p-3.5 pt-2.5 pl-2.5"
+        type="button"
+        @click="stateStore.resetPage"
+        v-if="stateStore.currentPage > 1"
+      >
+        <IconUp class="text-amber-950" />
+      </button>
+    </Transition>
   </div>
 </template>
 
 <script setup>
 import UserModal from '@/components/UserModal.vue'
-import {onMounted, useTemplateRef, ref, computed, watch} from 'vue'
+import {useTemplateRef, ref, computed, watch} from 'vue'
 import PostItem from '@/components/PostItem.vue'
 import {usePostStore} from '@/stores/posts'
 import {useStateStore} from '@/stores/state'
 import {useUserStore} from '@/stores/users'
+import IconUp from '@/icons/IconUp.vue'
 const postStore = usePostStore()
 const stateStore = useStateStore()
 const userStore = useUserStore()
