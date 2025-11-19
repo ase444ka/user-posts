@@ -2,43 +2,52 @@
   <DialogRoot :open="open">
     <DialogPortal>
       <DialogOverlay
-        class="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0 z-30"
+        class="bg-gray-500 opacity-60 fixed inset-0 z-30 data-[state=open]:animate-[backdropShow_0.5s_ease] data-[state=closed]:animate-[backdropHide_0.5s_ease]"
       />
       <DialogContent
         @interact-outside="handleModalClose"
         @escape-key-down="handleModalClose"
         :user="userStore.currentUser"
-        class="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[100]"
+        class="data-[state=open]:animate-[dialogShow_0.5s_ease] data-[state=closed]:animate-[dialogHide_0.5s_ease] fixed top-[50%] left-[50%] max-h-[85vh] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-md p-[25px] shadow-md focus:outline-none z-100 bg-amber-100"
       >
-        <DialogTitle class="text-mauve12 m-0 text-[17px] font-semibold">
-          {{userStore.currentUser.name}}
+        <DialogTitle class="m-0 font-md font-semibold p-5 text-lg">
+          <div class="border-b pb-1.5">
+            {{ userStore.currentUser.name }}
+          </div>
         </DialogTitle>
-        <DialogDescription
-          class="text-mauve11 mt-2.5 mb-5 text-[15px] leading-normal"
-        >
-          {{userStore.currentUser.username}}
-        </DialogDescription>
-        <div>{{userStore.currentUser.username}}</div>
-        <div>{{userStore.currentUser.email}}</div>
-        <a :href="userStore.currentUser.href" target="_blank">{{userStore.currentUser.website}}</a>
-        <div>{{userStore.currentUser.work}}</div>
-        <div>{{userStore.currentUser.fullAddress}}</div>
-        <div class="mt-[25px] flex justify-end">
+        <div class="px-5">
+          <div class="pt-2">{{ userStore.currentUser.username }}</div>
+          <div class="text-sm text-gray-500">username</div>
+          <div class="pt-3">{{ userStore.currentUser.email }}</div>
+          <div :class="'pb-3 text-sm text-gray-500'">email</div>
+          <a
+            class="pt-3 cursor-pointer underline text-amber-900"
+            :href="userStore.currentUser.href"
+            target="_blank"
+            >{{ userStore.currentUser.website }}</a
+          >
+          <div class="text-sm text-gray-500">website</div>
+          <div class="pt-3">{{ userStore.currentUser.work }}</div>
+          <div class="text-sm text-gray-500">company name</div>
+          <div class="pt-3">{{ userStore.currentUser.fullAddress }}</div>
+          <div class="text-sm text-gray-500">company address</div>
+        </div>
+        <div class="pt-5 flex justify-end">
           <DialogClose as-child>
             <button
               @click="handleModalClose"
-              class="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-sm px-[15px] font-semibold leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+              class="p-3 font-semibold focus:outline-none cursor-pointer block active:scale-95"
             >
               close
             </button>
           </DialogClose>
         </div>
         <DialogClose
-          class="text-grass11 hover:bg-green4 focus:shadow-green7 absolute top-2.5 right-2.5 inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+          class="cursor-pointer absolute top-2.5 right-2.5 rounded-full focus:outline-none active:scale-95 p-2.5 pt-1.5 pl-1.5"
           aria-label="Close"
           @click="handleModalClose"
         >
-          X
+          <IconClose />
         </DialogClose>
       </DialogContent>
     </DialogPortal>
@@ -46,10 +55,10 @@
 </template>
 
 <script setup>
+import IconClose from '@/icons/IconClose.vue'
 import {
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogOverlay,
   DialogPortal,
   DialogRoot,
@@ -63,10 +72,41 @@ const open = defineModel()
 
 function handleModalClose() {
   open.value = false
-  userStore.resetCurrentUser()
+  setTimeout(userStore.resetCurrentUser, 501)
 }
 </script>
 
-<style scoped>
-
+<style>
+@keyframes dialogShow {
+  0% {
+    transform: translateY(-1000px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes backdropShow {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+@keyframes dialogHide {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-1000px);
+  }
+}
+@keyframes backdropHide {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 </style>
