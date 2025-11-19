@@ -22,7 +22,7 @@ watch(message, message => {
   setTimeout(() => {
     open.value = false
     stateStore.resetError()
-  }, 700)
+  }, 30000)
 })
 </script>
 
