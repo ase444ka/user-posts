@@ -10,7 +10,14 @@ export const usePostStore = defineStore('posts', () => {
   const posts = ref([])
   const filter = ref('')
   const filteredPosts = computed(() =>
-    posts.value.filter(p => p.body.includes(filter.value)),
+    posts.value.filter(p => p.body.includes(filter.value)).map(post => {
+      const user = userStore.users.find(user => user.id === post.userId)
+      return {
+      ...post,
+      email: user.email,
+      visited: user.visited,
+      short: post.body.slice(0, 30),
+    }}),
   )
 
   const showingPosts = computed(() =>
@@ -20,12 +27,8 @@ export const usePostStore = defineStore('posts', () => {
     try {
       stateStore.setLoading(true)
       await userStore.getUsers()
-      const data = await api.getPosts()
-      posts.value = data.map(post => ({
-        ...post,
-        email: userStore.users.find(user => user.id === post.userId).email,
-        short: post.body.slice(0, 30),
-      }))
+      posts.value = await api.getPosts()
+
     } catch (err) {
       stateStore.setError(err.message)
     } finally {

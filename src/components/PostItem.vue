@@ -5,6 +5,7 @@
     <div
       class="p-1 basis-3/12 cursor-pointer"
       @click="$emit('emailClick', post)"
+      :class="visitedOrNotClass"
     >
       {{ post.email }}
     </div>
@@ -13,7 +14,7 @@
 </template>
 
 <script setup>
-import {useTemplateRef, watch, onBeforeUnmount} from 'vue'
+import {useTemplateRef, watch, onBeforeUnmount, computed} from 'vue'
 import {useStateStore} from '@/stores/state'
 import PostBody from '@/components/PostBody.vue'
 const {post} = defineProps(['post'])
@@ -22,6 +23,7 @@ const stateStore = useStateStore()
 function setTop() {
   setTimeout(stateStore.setTop, 300)
 }
+const visitedOrNotClass = computed(() => post.visited ? 'text-amber-950 italic' : '')
 watch(item, value => {
   value.addEventListener('mouseenter', setTop)
 })
