@@ -55,7 +55,6 @@ function handleScroll(e) {
 }
 
 watch(isReset, value => {
-  console.log('watch ', value)
   value && (tableRef.value.scrollTop = 0)
 })
 </script>

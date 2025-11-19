@@ -39,7 +39,6 @@ export const usePostStore = defineStore('posts', () => {
 
   function sort(fieldName) {
     stateStore.resetPage()
-    console.log(posts.value[0][fieldName])
     posts.value.sort((a, b) => (a[fieldName] > b[fieldName] ? 1 : -1))
   }
 

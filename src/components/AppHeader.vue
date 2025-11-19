@@ -32,7 +32,6 @@ const stateStore = useStateStore()
 const searchString = ref(null)
 
 function search() {
-  console.log('debounce')
   stateStore.resetPage()
   postStore.searchPosts(searchString.value)
 }
